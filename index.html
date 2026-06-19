@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Apresentações</title>
+    <!-- Fontes do Google para ficar idêntico ao PDF -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- html2canvas para capturar cada slide -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- jsPDF para montar o PDF -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+    <script src="logoBase64.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Editor -->
+        <aside class="sidebar">
+            <h2>Gerador de Apresentação</h2>
+            
+            <div class="form-group">
+                <label for="primaryColor">Cor da Identidade (Hexadecimal)</label>
+                <div class="color-picker-wrapper">
+                    <input type="color" id="primaryColor" value="#00e5ff">
+                    <input type="text" id="primaryColorText" value="#00e5ff">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Logo da Empresa (Capa e Rodapé)</label>
+                <input type="file" id="companyLogo" accept="image/*">
+            </div>
+
+            <hr>
+
+            <!-- Título / Capa -->
+            <div class="section-title">
+                <input type="checkbox" id="showCover" checked> 
+                <label for="showCover">1. Capa</label>
+            </div>
+            <div class="form-group">
+                <label for="coverSubtitle">Palavra Menor (Ex: FÓRMULA)</label>
+                <input type="text" id="coverSubtitle" value="FÓRMULA">
+            </div>
+            <div class="form-group">
+                <label for="coverTitle">Título Principal</label>
+                <input type="text" id="coverTitle" value="TRÁFEGO PAGO + IA">
+            </div>
+            <div class="form-group">
+                <label for="coverDescription">Subtítulo Descritivo</label>
+                <textarea id="coverDescription" rows="3">Aprenda a criar anúncios no Facebook e Instagram usando Claude, ChatGPT e Gemini ao seu lado</textarea>
+            </div>
+            <div class="form-group">
+                <label for="coverWebsite">Site</label>
+                <input type="text" id="coverWebsite" value="www.altaoffice.com.br">
+            </div>
+            <div class="form-group">
+                <label for="coverStats">Texto Abaixo do Site</label>
+                <input type="text" id="coverStats" value="5 MIL ALUNOS • 100 EMPRESAS • 20K SEGUIDORES">
+            </div>
+
+            <hr>
+
+            <!-- Quem Somos -->
+            <div class="section-title">
+                <input type="checkbox" id="showAbout" checked>
+                <label for="showAbout">2. Quem Somos</label>
+            </div>
+            <div class="form-group">
+                <label for="aboutUsText">Texto</label>
+                <textarea id="aboutUsText" rows="6">Alta Office Educação é uma empresa especializada em aplicar IA, marketing e tecnologia para gerar resultados reais nos negócios.
+
+Formamos empresários e profissionais que dominam o digital — com aulas práticas, ferramentas reais e modelos prontos para aplicar no dia seguinte.</textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Dado 1</label>
+                    <input type="text" id="stat1Title" value="5 MIL">
+                    <input type="text" id="stat1Sub" value="ALUNOS">
+                </div>
+                <div class="form-group">
+                    <label>Dado 2</label>
+                    <input type="text" id="stat2Title" value="100">
+                    <input type="text" id="stat2Sub" value="EMPRESAS">
+                </div>
+                <div class="form-group">
+                    <label>Dado 3</label>
+                    <input type="text" id="stat3Title" value="20K">
+                    <input type="text" id="stat3Sub" value="SEGUIDORES">
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Módulos -->
+            <div class="section-title">
+                <input type="checkbox" id="showModules" checked>
+                <label for="showModules">3. Módulos</label>
+            </div>
+            <div id="modulesContainer">
+                <div class="form-group module-item">
+                    <label>Título do Módulo</label>
+                    <input type="text" class="mod-title" value="MÓDULO 01">
+                    <label>Subtítulo do Módulo</label>
+                    <input type="text" class="mod-sub" value="FUNDAMENTOS: COMO O META ADS PENSA — E COMO A IA TE DÁ VANTAGEM">
+                    <label>Tópicos (um por linha)</label>
+                    <textarea class="mod-topics" rows="3">Como funciona o ecossistema do Facebook e Instagram Ads
+Por que o botão "Turbinar" desperdiça seu dinheiro</textarea>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="addModule()" style="background-color: #2a2b2e; color: #fff; margin-top: 10px;">+ Adicionar Módulo</button>
+
+            <hr>
+
+            <!-- Bônus -->
+            <div class="section-title">
+                <input type="checkbox" id="showBonus" checked>
+                <label for="showBonus">4. Bônus</label>
+            </div>
+            <div class="form-group">
+                <label for="bonusTitle">Título</label>
+                <input type="text" id="bonusTitle" value="SEU ASSISTENTE DE TRÁFEGO COM IA">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Coluna 1</label>
+                    <input type="text" id="col1Title" value="CLAUDE">
+                    <textarea id="col1Items" rows="3">Copy de anúncio do zero
+Variações de headline</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Coluna 2</label>
+                    <input type="text" id="col2Title" value="CHATGPT">
+                    <textarea id="col2Items" rows="3">Hooks e aberturas em escala
+Variações de criativos</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Coluna 3</label>
+                    <input type="text" id="col3Title" value="GEMINI">
+                    <textarea id="col3Items" rows="3">Análise de métricas
+Comparação de campanhas</textarea>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Método RIV -->
+            <div class="section-title">
+                <input type="checkbox" id="showRiv" checked>
+                <label for="showRiv">5. Método</label>
+            </div>
+            <div class="form-group">
+                <label for="rivTitle">Título do Método</label>
+                <input type="text" id="rivTitle" value="RIV">
+            </div>
+            <div class="form-group">
+                <label>Letra 1 (Ex: R)</label>
+                <div class="form-row">
+                    <input type="text" id="rivRLetter" value="R" style="width: 50px; text-align: center;">
+                    <input type="text" id="rivRTitle" value="Remarketing" style="flex: 1;">
+                </div>
+                <textarea id="rivRDesc" rows="2">Impacte as pessoas certas, no momento certo.</textarea>
+            </div>
+            <div class="form-group">
+                <label>Letra 2 (Ex: I)</label>
+                <div class="form-row">
+                    <input type="text" id="rivILetter" value="I" style="width: 50px; text-align: center;">
+                    <input type="text" id="rivITitle" value="Inteligência" style="flex: 1;">
+                </div>
+                <textarea id="rivIDesc" rows="2">Colete, interprete e use dados reais.</textarea>
+            </div>
+            <div class="form-group">
+                <label>Letra 3 (Ex: V)</label>
+                <div class="form-row">
+                    <input type="text" id="rivVLetter" value="V" style="width: 50px; text-align: center;">
+                    <input type="text" id="rivVTitle" value="Vendas com Previsibilidade" style="flex: 1;">
+                </div>
+                <textarea id="rivVDesc" rows="2">Construa um sistema que gera resultados consistentes mês após mês.</textarea>
+            </div>
+
+            <hr>
+
+            <!-- Mentor -->
+            <div class="section-title">
+                <input type="checkbox" id="showMentor" checked>
+                <label for="showMentor">6. Seu Mentor</label>
+            </div>
+            <div class="form-group">
+                <label>Foto do Mentor</label>
+                <input type="file" id="mentorPhoto" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="mentorName">Nome do Mentor</label>
+                <input type="text" id="mentorName" value="Miqueias">
+            </div>
+            <div class="form-group">
+                <label for="mentorHandle">Instagram (@)</label>
+                <input type="text" id="mentorHandle" value="@miqueias.rp">
+            </div>
+            <div class="form-group">
+                <label for="mentorBio">Biografia (uma linha por item)</label>
+                <textarea id="mentorBio" rows="6">Empresário e estrategista digital
+Fundador de duas empresas que vendem 100% pela internet
+Certificado Google Ads AI Performance
+Certificado Anthropic (Claude AI)</textarea>
+            </div>
+
+            <hr>
+
+            <!-- Investimento -->
+            <div class="section-title">
+                <input type="checkbox" id="showInvestment" checked>
+                <label for="showInvestment">7. Investimento & Contatos</label>
+            </div>
+            <div class="form-group">
+                <label for="invText">Texto Investimento</label>
+                <textarea id="invText" rows="3">Os valores são informados diretamente via WhatsApp pelo nosso time comercial, garantindo que você receba as melhores condições.</textarea>
+            </div>
+            <div class="form-group">
+                <label for="reqText">Pré-requisitos (um por linha)</label>
+                <textarea id="reqText" rows="3">Ter uma conta no Instagram ou Facebook
+Acesso a uma ferramenta de IA gratuita</textarea>
+            </div>
+            <div class="form-group">
+                <label for="contactText">Contatos (Telefone/Email)</label>
+                <textarea id="contactText" rows="3">+55 66 9639-6190
++55 66 9209-2307
+miqueias@altaoffice.com.br</textarea>
+            </div>
+
+            <hr>
+            <!-- Obrigado -->
+            <div class="section-title">
+                <input type="checkbox" id="showThanks" checked>
+                <label for="showThanks">8. Obrigado</label>
+            </div>
+            <div class="form-group">
+                <label for="thanksWebsite">Site</label>
+                <input type="text" id="thanksWebsite" value="www.altaoffice.com.br">
+            </div>
+            <div class="form-group">
+                <label for="thanksFooter">Rodapé</label>
+                <input type="text" id="thanksFooter" value="ALTA OFFICE EDUCAÇÃO • @altaoffice">
+            </div>
+
+            <!-- Botão Imprimir -->
+            <hr>
+            <button class="btn-primary" onclick="downloadPDF()" id="downloadBtn">Baixar em PDF</button>
+            <p id="downloadStatus" style="font-size:0.8rem; color:#888; margin-top:5px; text-align:center;">Clique para gerar e baixar o PDF da apresentação.</p>
+        </aside>
+
+        <!-- Presentation Preview -->
+        <main class="preview-area">
+            <div id="presentation" class="presentation">
+                <!-- Slides gerados aqui -->
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
