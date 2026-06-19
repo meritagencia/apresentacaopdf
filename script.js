@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const showCover = document.getElementById('showCover');
+    const showCourse = document.getElementById('showCourse');
     const showAbout = document.getElementById('showAbout');
     const showModules = document.getElementById('showModules');
     const showBonus = document.getElementById('showBonus');
@@ -22,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const coverDescription = document.getElementById('coverDescription');
     const coverWebsite = document.getElementById('coverWebsite');
     const coverStats = document.getElementById('coverStats');
+
+    const courseCardTitle = document.getElementById('courseCardTitle');
+    const courseCardText = document.getElementById('courseCardText');
+    const targetListText = document.getElementById('targetListText');
 
     const aboutUsText = document.getElementById('aboutUsText');
     const stat1Title = document.getElementById('stat1Title');
@@ -149,6 +154,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="cover-logo-area">${logoHtml}</div>
+                </div>
+            </div>`;
+        }
+
+        // ——— SOBRE O CURSO ———
+        if (showCourse && showCourse.checked) {
+            html += `
+            <div class="slide">
+                <div class="slide-content" style="justify-content: center;">
+                    <div class="course-title">SOBRE O CURSO</div>
+                    <div class="course-card">
+                        <div class="course-card-title">${courseCardTitle.value}</div>
+                        <div class="course-card-text">${courseCardText.value}</div>
+                    </div>
+                    
+                    <div class="course-title" style="margin-bottom: 20px;">PARA QUEM É ESTE CURSO</div>
+                    <ul class="target-list">
+                        ${targetListText.value.split('\n').filter(i => i.trim()).map(i => `<li class="target-item">${i}</li>`).join('')}
+                    </ul>
                 </div>
             </div>`;
         }
