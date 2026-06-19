@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="mentor-photo-box">${photo}</div>
                         <div class="mentor-details">
                             <div class="mentor-name-text">${mentorName.value}</div>
-                            <div class="mentor-handle-text">${mentorHandle.value}</div>
+                            <div class="mentor-handle-text"><a href="https://instagram.com/${mentorHandle.value.replace('@', '')}" target="_blank" style="color: inherit; text-decoration: none;">${mentorHandle.value}</a></div>
                             <ul class="mentor-bio">${fmtList(mentorBio.value, 'mentor-bio-point')}</ul>
                         </div>
                     </div>
