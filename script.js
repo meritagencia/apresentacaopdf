@@ -217,23 +217,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 modules.forEach(mod => {
                     const t = mod.querySelector('.mod-title').value;
                     const s = mod.querySelector('.mod-sub').value;
-                    const topics = fmtList(mod.querySelector('.mod-topics').value, 'module-topic');
+                    const topicItems = mod.querySelector('.mod-topics').value.split('\n').filter(i => i.trim()).map(i => {
+                        const txt = i.trim();
+                        if (txt.startsWith('[IA]')) {
+                            const cleanText = txt.replace('[IA]', '').trim();
+                            return `<li class="ia-item"><span class="ia-badge">[IA]</span><span class="ia-text">${cleanText}</span></li>`;
+                        }
+                        return `<li>${txt}</li>`;
+                    }).join('');
+                    
                     cards += `
                     <div class="module-card">
-                        <div class="module-num">${t}</div>
-                        <div class="module-name">${s}</div>
-                        <ul class="module-topics">${topics}</ul>
+                        <div class="module-number">${t}</div>
+                        <div class="module-title">${s}</div>
+                        <ul class="module-list">${topicItems}</ul>
                     </div>`;
                 });
                 html += `
                 <div class="slide">
-                    <div class="deco-corner-tl"></div>
-                    <div class="deco-glow-top"></div>
-                    <div class="slide-watermark">CONTEÚDO PROGRAMÁTICO</div>
-                    <div class="slide-content" style="padding-top: 70px;">
-                        <div class="logo-triangle" style="margin: 0 auto 25px;"></div>
-                        <div class="title-section accent-underline" style="margin-bottom: 25px;">CONTEÚDO</div>
-                        <div class="modules-container">${cards}</div>
+                    <div class="slide-content" style="padding: 60px 45px;">
+                        <div class="modules-grid">${cards}</div>
                     </div>
                 </div>`;
             }
