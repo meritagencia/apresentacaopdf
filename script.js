@@ -117,15 +117,13 @@ document.addEventListener('DOMContentLoaded', () => {
         div.className = 'form-group module-item';
         div.style.marginTop = '12px';
         div.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <label style="margin: 0;">Título do Módulo</label>
-                <button type="button" onclick="removeModule(this)" style="background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.85em; text-decoration: underline; padding: 0;">Remover</button>
-            </div>
+            <label>Título do Módulo</label>
             <input type="text" class="mod-title" value="MÓDULO 0${count}">
             <label>Subtítulo do Módulo</label>
             <input type="text" class="mod-sub" value="NOVO MÓDULO">
             <label>Tópicos (um por linha)</label>
             <textarea class="mod-topics" rows="3"></textarea>
+            <button type="button" onclick="removeModule(this)" style="background-color: #d9534f; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; margin-top: 15px; font-weight: 600; width: 100%; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">Remover Módulo</button>
         `;
         container.appendChild(div);
         div.querySelectorAll('input, textarea').forEach(inp => inp.addEventListener('input', renderSlides));
