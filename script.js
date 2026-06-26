@@ -100,6 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (/^#[0-9A-F]{6}$/i.test(e.target.value)) updateColor(e.target.value);
     });
 
+    // Remove Module
+    window.removeModule = function(btn) {
+        const item = btn.closest('.module-item');
+        if (item) {
+            item.remove();
+            renderSlides();
+        }
+    };
+
     // Add Module
     window.addModule = function () {
         const container = document.getElementById('modulesContainer');
@@ -108,7 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
         div.className = 'form-group module-item';
         div.style.marginTop = '12px';
         div.innerHTML = `
-            <label>Título do Módulo</label>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="margin: 0;">Título do Módulo</label>
+                <button type="button" onclick="removeModule(this)" style="background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.85em; text-decoration: underline; padding: 0;">Remover</button>
+            </div>
             <input type="text" class="mod-title" value="MÓDULO 0${count}">
             <label>Subtítulo do Módulo</label>
             <input type="text" class="mod-sub" value="NOVO MÓDULO">
