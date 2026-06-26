@@ -227,8 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (modules.length > 0) {
                 let cards = '';
                 modules.forEach(mod => {
-                    const t = mod.querySelector('.mod-title').value;
-                    const s = mod.querySelector('.mod-sub').value;
+                    const t = mod.querySelector('.mod-title').value.trim();
+                    const s = mod.querySelector('.mod-sub').value.trim();
+                    const topicsVal = mod.querySelector('.mod-topics').value.trim();
+                    
+                    if (!t && !s && !topicsVal) return; // Pula a renderização se tudo estiver vazio
+
                     const topicItems = mod.querySelector('.mod-topics').value.split('\n').filter(i => i.trim()).map(i => {
                         const txt = i.trim();
                         if (txt.startsWith('[IA]')) {
